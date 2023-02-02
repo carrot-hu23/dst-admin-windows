@@ -1,5 +1,6 @@
 # dst-admin-windows
 
+Windows 平台下的 steam 饥荒联机版开服工具
 
 ## 预览
 
@@ -17,9 +18,17 @@
 + create-react-app
 + electron
 
+## 项目运行
+```js
+npm install
+npm run dev
+```
+
 ## 部署步骤
-1. npm install
-2. npm run packager
+```js
+npm install
+npm run packager
+```
 
 默认在当前文件生成dist文件
 
