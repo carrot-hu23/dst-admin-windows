@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button, message, Steps, Form, Card, Skeleton } from 'antd';
 
-import HomeSetting from './component/HomeSetting';
-import SettingDone from './component/SettingDone';
-import HomeMaster from './component/HomeMaster';
-import HomeCaves from './component/HomeCaves';
-import HomeMod from './component/HomeMod';
+import Cluster from './Cluster';
+import Master from './Master';
+import Caves from './Caves/Index';
+import Mod from './Mod';
 
 import { getHomeConfigWindowApi } from '../../api/window/gameWindowsApi';
 // import { readDstConfigSync } from '../../api/window/dstConfigApi';
@@ -40,24 +39,24 @@ const Home = () => {
     const steps = [
         {
             title: '房间设置',
-            content: (<HomeSetting form={form} />),
+            content: (<Cluster form={form} />),
         },
         {
             title: '地面世界设置',
-            content: (<HomeMaster form={form} />),
+            content: (<Master form={form} />),
         },
         {
             title: '洞穴世界设置',
-            content: (<HomeCaves form={form} />),
+            content: (<Caves form={form} />),
         },
         {
             title: 'MOD 设置',
-            content: (<HomeMod form={form} />),
+            content: (<Mod form={form} />),
         },
-        {
-            title: '完成',
-            content: (<SettingDone form={form} />),
-        },
+        // {
+        //     title: '完成',
+        //     content: (<SettingDone form={form} />),
+        // },
     ];
 
 
@@ -134,20 +133,6 @@ const Home = () => {
                             保存设置
                         </Button>
                     )}
-                    {/* {current === steps.length - 1 && (
-                        <Button
-                        style={{
-                            margin: '0 8px',
-                            background: '#F56C6C',
-                            color: '#fff'
-                        }}
-                        onClick={() => {
-                            message.success('正在生成新的游戏!')
-                            setCurrent(0)
-                        }}>
-                            新的游戏
-                        </Button>
-                    )} */}
                     {current < steps.length - 1 && (
                         <Button type="primary" onClick={() => next()}>
                             下一步

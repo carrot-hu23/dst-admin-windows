@@ -223,6 +223,9 @@ function write_mod_setup(mods) {
     const pattern = /workshop-\w[-\w+]*/g;
     let serverModSetup = ""
     const workshops = mods.match(pattern)
+    if(workshops === undefined || workshops === null) {
+        return
+    }
     for (const workshop of workshops) {
         const split = workshop.split("-")
         const workshopId = split[1].trim()

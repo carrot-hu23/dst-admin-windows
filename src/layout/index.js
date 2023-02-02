@@ -1,15 +1,10 @@
-// import axios from "axios";
 import React, { useState, useEffect } from 'react';
 import BasicLayout, { SettingDrawer, PageContainer } from '@ant-design/pro-layout';
 
 import { Outlet, Link } from 'react-router-dom';
 import { menus } from '../config/menu';
 
-// import { ProCard } from '@ant-design/pro-components';
-// import { Card } from 'antd';
-
-// import Tittle from './header/tittle';
-
+import './index.css';
 
 function LayoutApp(props) {
     const title = 'DST 管理后台'

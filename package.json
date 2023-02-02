@@ -1,6 +1,8 @@
 {
-  "name": "my-dst",
+  "name": "dst-admin-windows",
   "version": "0.1.0",
+  "author": "hujb",
+  "description": "window 饥荒联机版开服管理工具",
   "private": true,
   "dependencies": {
     "@ant-design/pro-components": "^2.3.51",
@@ -35,6 +37,16 @@
     "dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm:electron\"",
     "electron": "wait-on tcp:3000 && electron .",
     "packager": "npm run build && electron-builder"
+  },
+  "build" : {
+    "extraResources":  {
+        "from": "./dst_config",
+        "to": "../dst_config"
+    },
+    "nsis": {
+      "oneClick":false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "eslintConfig": {
     "extends": [

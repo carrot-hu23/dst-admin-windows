@@ -14,7 +14,7 @@ import { dstGameMod } from '../../../utils/dst';
 const { TextArea } = Input;
 
 
-const HomeSetting = (props) => {
+const Cluster = (props) => {
 
   return (
     <Form
@@ -95,4 +95,4 @@ const HomeSetting = (props) => {
     </Form>
   );
 };
-export default HomeSetting;
+export default Cluster;

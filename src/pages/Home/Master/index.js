@@ -7,7 +7,7 @@ import {
 
 const { TextArea } = Input;
 
-const HomeMaster = (props) => {
+const Master = (props) => {
     return (
         <Form
             form={props.form}
@@ -26,12 +26,4 @@ const HomeMaster = (props) => {
         </Form>
     );
 };
-export default HomeMaster;
-
-// const HomeSetting = () => {
-//     return (
-//         <div>房间设置表单</div>
-//     )
-// }
-
-// export default HomeSetting
+export default Master;

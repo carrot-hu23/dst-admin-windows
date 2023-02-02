@@ -1,0 +1,7 @@
+:where(.css-dev-only-do-not-override-sqgule).ant-pro-card .ant-pro-card-body {
+    display: block;
+    box-sizing: border-box;
+    height: 100%;
+    padding-inline: 24px;
+    padding-block: 4px;
+}

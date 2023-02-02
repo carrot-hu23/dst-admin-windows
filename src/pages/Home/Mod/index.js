@@ -6,7 +6,7 @@ import {
 
 const { TextArea } = Input;
 
-const HomeMod = (props) => {
+const Mod = (props) => {
     return (
         <Form
             form={props.form}
@@ -24,4 +24,4 @@ const HomeMod = (props) => {
         </Form>
     );
 };
-export default HomeMod;
+export default Mod;

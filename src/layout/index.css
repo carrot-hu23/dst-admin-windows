@@ -1,0 +1,8 @@
+:where(.css-dev-only-do-not-override-12uqs40).ant-pro-page-container-children-content {
+    padding-block: 24px;
+    padding-inline: 12px;
+}
+:where(.css-dev-only-do-not-override-sqgule).ant-pro-page-container-children-content {
+    padding-block: 24px;
+    padding-inline: 16px;
+}

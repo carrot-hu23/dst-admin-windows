@@ -136,17 +136,12 @@ const GameStatus = (props) => {
                 >
                     <Form.Item label="饥荒状况">
                         <Space>
-                            {/* <Button
-                                onClick={launchOnClick}
-                                type={runningStatus ? 'default' : 'primary'} >{runningStatus ? '启动游戏' : '游戏正在运行'}
-                            </Button> */}
                             <Button
                                 onClick={launchOnClick}
                                 type='primary' >{'启动游戏'}
                             </Button>
                         </Space>
                     </Form.Item>
-
 
                     {mode && (<Form.Item label="快捷操作">
                         <Space>

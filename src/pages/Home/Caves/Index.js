@@ -6,7 +6,7 @@ import {
 
 const { TextArea } = Input;
 
-const HomeCaves = (props) => {
+const Caves = (props) => {
     return (
         <Form
             form={props.form}
@@ -24,4 +24,4 @@ const HomeCaves = (props) => {
         </Form>
     );
 };
-export default HomeCaves;
+export default Caves;

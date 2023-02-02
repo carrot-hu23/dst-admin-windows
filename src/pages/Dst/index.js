@@ -8,7 +8,7 @@ import { dstHomeListApi, dstHomeDetailApi } from '../../api/dstApi';
 
 import React, { useState } from 'react';
 
-import HomeDetail from './component/HomeDetail';
+import HomeDetail from './Home';
 
 
 const DstServerList = () => {

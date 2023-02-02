@@ -38,6 +38,7 @@ const System = () => {
         config += 'force_install_dir=' + values.force_install_dir + '\n'
         config += 'doNotStarveTogether=' + values.doNotStarveTogether + '\n'
         config += 'cluster=' + values.cluster + '\n'
+        config += 'backupPath=' + values.backupPath + '\n'
         
         writeDstConfigSync(config)
     }
@@ -56,27 +57,22 @@ const System = () => {
             <Card>
                 <br />
                 <Form
-                    // name="basic"
                     labelCol={{
                         span: 6,
                     }}
                     wrapperCol={{
                         span: 18,
                     }}
-                    // style={{
-                    //     maxWidth: 600,
-                    // }}
                     initialValues={{
-                        // type: 1,
+                       backupPath: 'C:\\dst\\'
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
-                    // autoComplete="off"
                     layout="horizontal"
                     labelAlign={'left'}
                     form={form}
                 >
-                    <Form.Item label="安装方式" name="mode" onChange={onRadioChange}>
+                    <Form.Item label="启动方式" name="mode" onChange={onRadioChange}>
                         <Radio.Group >
                             <Radio key={1} value={1}>Steamcmd</Radio>
                             <Radio key={2} value={2}>Steam Don't Starve Together Dedicated server</Radio>
@@ -113,6 +109,7 @@ const System = () => {
                     <Form.Item
                         label="服务器存档位置"
                         name="doNotStarveTogether"
+                        tooltip="饥荒服务器房间的位置（\Documents\Klei\DoNotStarveTogether）"
                         rules={[
                             {
                                 required: true,
@@ -121,12 +118,12 @@ const System = () => {
                         ]}
                     >
                         <Input placeholder="服务器存档位置" />
-                        {/* <TextArea rows={2} placeholder="服务器房间文件位置" /> */}
                     </Form.Item>
 
                     <Form.Item
                         label="服务器文件夹名"
                         name="cluster"
+                        tooltip="要启用哪个档的文件名"
                         rules={[
                             {
                                 required: true,
@@ -135,7 +132,14 @@ const System = () => {
                         ]}
                     >
                         <Input placeholder="服务器文件夹名" />
-                        {/* <TextArea rows={2} placeholder="服务器房间文件位置" /> */}
+                    </Form.Item>
+
+                    <Form.Item
+                        label="游戏备份存放位置"
+                        name="backupPath"
+                        tooltip="默认存放在 C:/dst/backup/ 目录下"
+                    >
+                        <Input placeholder="游戏备份存放位置" />
                     </Form.Item>
 
                     <Form.Item

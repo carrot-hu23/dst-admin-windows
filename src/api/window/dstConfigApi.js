@@ -42,6 +42,9 @@ function parseConfig(res) {
         if (str[0].trim() === 'force_install_dir') {
             result.force_install_dir = str[1]
         }
+        if (str[0].trim() === 'backupPath') {
+            result.backupPath = str[1]
+        }
     }
     return result
 }

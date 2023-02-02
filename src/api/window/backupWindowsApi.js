@@ -1,4 +1,4 @@
-import { http } from "../utils/http";
+import { http } from "../../utils/http"
 
 async function createBackupApi() {
     const url = '/api/dashboard'
@@ -6,10 +6,13 @@ async function createBackupApi() {
     return response.data
 }
 
-async function getBackupApi() {
-    const url = '/api/game/backup'
-    const response = await http.get(url)
-    return response.data
+function getBackupApi() {
+    return [{
+        "createTime": "2023-01-27T16:07:25.2839413+08:00",
+        "fileName": "test2027 - 副本.zip",
+        "fileSize": 2232891,
+        "time": 1674806845
+    }]
 }
 
 async function deleteBackupApi(fileNames) {
