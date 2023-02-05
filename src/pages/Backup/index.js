@@ -1,39 +1,21 @@
-import { Space, Upload, message, Button, Modal, Input } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Space, message, Button, Modal, Input } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { ProTable } from '@ant-design/pro-components';
 import { SearchOutlined } from '@ant-design/icons';
 // import Highlighter from 'react-highlight-words';
 import BackupStatistic from './Statistic';
 
-import { getBackupApi, deleteBackupApi, renameBackupApi } from '../../api/window/backupWindowsApi';
-
-
-const props = {
-  name: 'file',
-  action: 'http://localhost:8888/api/game/backup/upload',
-  // showUploadList: false,
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  customRequest(info) {
-    console.log(info.file, info.fileList);
-  }
-};
-
-
-
+import {
+  getBackupApi,
+  deleteBackupApi,
+  renameBackupApi,
+  openBackupDir
+} from '../../api/window/backupWindowsApi';
+import { getColumns } from './getColumns';
+import { getHeaderTitle } from './getHeaderTitle';
 
 
 const Backup = () => {
-
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -159,8 +141,9 @@ const Backup = () => {
   const [deleteBackup, setDeleteBackup] = useState({});
 
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [newBackupName, setNewBackupName] = useState("");
 
+
+  const inputRef = useRef("");
 
   const rowSelection = {
     selectedRowKeys,
@@ -177,7 +160,8 @@ const Backup = () => {
     for (let i = 0; i < backupList.length; i++) {
       backupList[i].key = i
     }
-    setBackupData(backupList)
+
+    setBackupData(backupList.sort((a, b) => b.createTime.getTime() - a.createTime.getTime()))
     const totalSize = backupList
       .map(backup => backup.fileSize)
       .reduce((prev, curr) => !isNaN(Number(curr)) ? prev + curr : prev, 0) / 1024 / 1024 / 1024
@@ -201,7 +185,6 @@ const Backup = () => {
       .then(data => {
         console.log(data);
         message.success("删除成功")
-
         setSelectBackup([])
         setSelectedRowKeys([])
         updateBackupData()
@@ -210,106 +193,56 @@ const Backup = () => {
 
   const deletBackupItem = (value) => {
     setConfirmLoading(true);
-    const oldBackupData = backupData
-    const newBackupData = oldBackupData.filter(item => value.key !== item.key)
-
     deleteBackupApi([value.fileName])
       .then(data => {
-        if (data.code === 200) {
-          setTimeout(() => {
-            message.success("删除成功")
-            setConfirmLoading(false);
-            setIsDeleteModalOpen(false)
-
-            setBackupData(newBackupData)
-
-          }, 1000);
-
-        }
+        setTimeout(() => {
+          message.success("删除成功")
+          setSelectBackup([])
+          setConfirmLoading(false);
+          setIsDeleteModalOpen(false)
+          updateBackupData()
+        }, 500);
       })
   }
 
   const renameBackupItem = (value) => {
     setConfirmLoading(true);
+
     const data = {
       fileName: value.fileName,
-      newName: newBackupName + ".zip"
+      newName: inputRef.current.input.value + ".zip"
     }
-
-    const oldBackupData = backupData
-    const newBackupData = oldBackupData.map(item => {
-      if (item.key === value.key) {
-        item.fileName = newBackupName + ".zip"
-      }
-      return item
-    })
-
     renameBackupApi(data)
       .then(data => {
-        if (data.code === 200) {
-          setTimeout(() => {
-            message.success("重命名成功")
-            setConfirmLoading(false);
-            setIsEditModalOpen(false)
-            setNewBackupName("")
-            setBackupData(newBackupData)
-
-          }, 1000);
-
-        }
+        setTimeout(() => {
+          message.success("重命名成功")
+          // setBackupData(newBackupData)
+          updateBackupData()
+        }, 500);
       })
+      .catch(error => {
+        message.error("重名失败")
+        console.log(error);
+
+      }).finally(() => {
+        setConfirmLoading(false);
+        setIsEditModalOpen(false)
+      });
   }
 
+  const columns = getColumns({
+    getColumnSearchProps,
+    setIsEditModalOpen,
+    setDeleteBackup,
+    openBackupDir,
+    setIsDeleteModalOpen
+  })
 
-  const columns = [
-    {
-      title: '存档名称',
-      dataIndex: 'fileName',
-      key: 'fileName',
-      render: (text) => <Button type="link" >{text}</Button>,
-      editable: true,
-      ...getColumnSearchProps('fileName'),
-    },
-    {
-      title: '文件大小',
-      dataIndex: 'fileSize',
-      key: 'fileSize',
-      render: (fileSize) => <span>{(fileSize / 1024 / 1024).toFixed(2) + ' MB'}</span>,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      valueType: 'dateTime',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button type="link" onClick={() => { setIsEditModalOpen(true); setDeleteBackup(record) }}>修改</Button>
-          <Button type="link" onClick={() => { window.location.href = "/api/game/backup/download?fileName=" + record.fileName; }} >打开</Button>
-          <Button type="text" danger onClick={() => { setIsDeleteModalOpen(true); setDeleteBackup(record) }}>删除</Button>
-        </Space>
-      ),
-    },
-  ]
-
-  const HeaderTitle = () => (
-    <Space >
-      <Upload {...props}>
-        <Button type="primary" icon={<UploadOutlined />}>上传</Button>
-      </Upload>
-
-      <Button type="primary" danger onClick={deleteSelectBackup} >
-        删除
-      </Button>
-      <Button onClick={updateBackupData} >
-        刷新
-      </Button>
-    </Space>
-
-  )
+  const HeaderTitle = getHeaderTitle({
+    openBackupDir,
+    deleteSelectBackup,
+    updateBackupData
+  })
 
   const EditModal = () => (
     <Modal title="修改文件名"
@@ -317,9 +250,12 @@ const Backup = () => {
       confirmLoading={confirmLoading}
       getContainer={false}
       onOk={() => { renameBackupItem(deleteBackup) }}
-      onCancel={() => { setIsEditModalOpen(false) }}>
+      onCancel={() => { setIsEditModalOpen(false) }}
+    >
       <br />
-      <Input allowClear placeholder="新的文件名" value={newBackupName} onChange={(e) => { setNewBackupName(e.target.value) }} />
+      <span>当前文件名：{deleteBackup.fileName}</span>
+      <br /><br />
+      <Input allowClear placeholder="新的文件名" ref={inputRef} />
     </Modal>
   )
 
@@ -328,7 +264,8 @@ const Backup = () => {
       confirmLoading={confirmLoading}
       getContainer={false}
       onOk={() => { deletBackupItem(deleteBackup) }}
-      onCancel={() => { setIsDeleteModalOpen(false) }}>
+      onCancel={() => { setIsDeleteModalOpen(false) }}
+    >
       <p>确认删除：</p>
       <p>{deleteBackup.fileName || ""}</p>
     </Modal>
@@ -337,12 +274,12 @@ const Backup = () => {
 
   return (
     <>
-      <BackupStatistic />
-      <br/>
+      <BackupStatistic size={backupSize} length={backupData.length} />
+      <br />
 
       <ProTable
         scroll={{
-          x: 600,
+          x: 500,
         }}
         headerTitle={
           <HeaderTitle />

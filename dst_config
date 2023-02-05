@@ -1,6 +1,6 @@
 mode=1
 steamcmd=C:\steamcmd\
 force_install_dir=C:\steamcmd\install\
-doNotStarveTogether=C:\Users\xm\Documents\Klei\DoNotStarveTogether\
-cluster=Cluster_2
-backupPath=C:\dst\test\
+doNotStarveTogether=undefined
+cluster=Cluster_1
+backupPath=C:\Users\xm\Desktop\backup\backup

@@ -1,8 +1,12 @@
-:where(.css-dev-only-do-not-override-12uqs40).ant-pro-page-container-children-content {
+.ant-pro-page-container-children-content {
     padding-block: 24px;
     padding-inline: 12px;
 }
-:where(.css-dev-only-do-not-override-sqgule).ant-pro-page-container-children-content {
-    padding-block: 24px;
-    padding-inline: 16px;
+
+.ant-pro .ant-pro-layout .ant-pro-sider-logo {
+    border-block-end: 0px solid;
+}
+
+:where(.css-dev-only-do-not-override-19dri4z).ant-menu-light:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: rgb(43 44 45);
 }

@@ -1,5 +1,5 @@
 const fs = window.require('fs')
-
+const path = window.require('path');
 
 const configPath = './dst_config'
 
@@ -46,6 +46,8 @@ function parseConfig(res) {
             result.backupPath = str[1]
         }
     }
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether")
+    result.doNotStarveTogether = dst_base_path
     return result
 }
 
@@ -61,8 +63,73 @@ function getDstConfig(callback) {
     })
 }
 
+function cluster_ini_path() {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const cluster_ini_path = path.join(dst_base_path, "cluster.ini")
+    return cluster_ini_path
+}
+
+function cluster_token_path() {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const cluster_token_path = path.join(dst_base_path, "cluster_token.txt")
+    return cluster_token_path
+}
+
+function master_leveldataoverride_path() {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const master_leveldataoverride_path = path.join(dst_base_path, "Master", "leveldataoverride.lua")
+    return master_leveldataoverride_path
+}
+
+function caves_leveldataoverride_path() {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const caves_leveldataoverride_path = path.join(dst_base_path, "Caves", "leveldataoverride.lua")
+    return caves_leveldataoverride_path
+}
+
+function modoverrides_path() {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const modoverrides_path = path.join(dst_base_path, "Master", "modoverrides.lua")
+    return modoverrides_path
+}
+
+function master_modoverrides_path() {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const master_modoverrides_path = path.join(dst_base_path, "Master", "modoverrides.lua")
+    return master_modoverrides_path
+}
+
+function caves_modoverrides_path() {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const caves_modoverrides_path = path.join(dst_base_path, "Caves", "modoverrides.lua")
+    return caves_modoverrides_path
+}
+
+function mods_setup_path() {
+    const config = readDstConfigSync()
+    const mods_setup_path = path.join(config.force_install_dir, "mods", "dedicated_server_mods_setup.lua")
+    return mods_setup_path
+}
+
 export {
     getDstConfig,
     readDstConfigSync,
-    writeDstConfigSync
+    writeDstConfigSync,
+
+
+    cluster_ini_path,
+    cluster_token_path,
+    master_leveldataoverride_path,
+    caves_leveldataoverride_path,
+    modoverrides_path,
+    master_modoverrides_path,
+    caves_modoverrides_path,
+    mods_setup_path
 }

@@ -14,17 +14,26 @@ import { createBackupApi } from '../../../api/backupApi';
 
 import { readDstConfigSync } from '../../../api/window/dstConfigApi';
 
-
-const force_install_dir = readDstConfigSync().force_install_dir
-const dstexe = readDstConfigSync().force_install_dir + 'bin64\\'
-const cluster = readDstConfigSync().cluster
-// const doNotStarveTogether = readDstConfigSync().doNotStarveTogether
-const steamcmd = readDstConfigSync().steamcmd
-
 const cmd = window.require('node-cmd');
 
+function launchDstMasterCmd () {
+    const config = readDstConfigSync()
+    const dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    const cluster = config.cluster
+    const cmd = 'cd ' + dstexe + ' && Start "Master" dontstarve_dedicated_server_nullrenderer_x64.exe -console -cluster ' + cluster + ' -shard Master'
+    return cmd
+}
+
+function launchDstCavesCmd () {
+    const config = readDstConfigSync()
+    const dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    const cluster = config.cluster
+    const cmd = 'cd ' + dstexe + ' && Start "Caves" dontstarve_dedicated_server_nullrenderer_x64.exe -console -cluster ' + cluster + ' -shard Caves'
+    return cmd
+}
+
 function launchDstMaster() {
-    const processRef = cmd.run('cd ' + dstexe + ' && Start "Master" dontstarve_dedicated_server_nullrenderer_x64.exe -console -cluster ' + cluster + ' -shard Master')
+    const processRef = cmd.run(launchDstMasterCmd())
     let data_line = '';
 
     //listen to the python terminal output
@@ -40,7 +49,7 @@ function launchDstMaster() {
 }
 
 function launchDstCaves() {
-    const processRef = cmd.run('cd ' + dstexe + ' && Start "Caves" dontstarve_dedicated_server_nullrenderer_x64.exe -console -cluster ' + cluster + ' -shard Caves')
+    const processRef = cmd.run(launchDstCavesCmd())
     let data_line = '';
 
     //listen to the python terminal output
@@ -56,8 +65,9 @@ function launchDstCaves() {
 }
 
 function updateDst(callback) {
-    const updateCommand = 'Start steamcmd +login anonymous +force_install_dir ' + force_install_dir + ' +app_update 343050 validate +quit'
-    const command = 'cd ' + steamcmd + ' && ' + updateCommand
+    const config = readDstConfigSync()
+    const updateCommand = 'Start steamcmd +login anonymous +force_install_dir ' + config.force_install_dir + ' +app_update 343050 validate +quit'
+    const command = 'cd ' + config.steamcmd + ' && ' + updateCommand
 
     cmd.run(command, (err, data, stderr) => {
         callback(err, data, stderr)
@@ -65,8 +75,6 @@ function updateDst(callback) {
     );
 }
 
-let status = false
-console.log('status', status);
 
 const GameStatus = (props) => {
 
@@ -84,9 +92,6 @@ const GameStatus = (props) => {
     }, [])
 
     const launchOnClick = () => {
-        // setRunningStatus(true)
-        status = !status
-
         launchDstMaster()
         launchDstCaves()
     }
@@ -143,7 +148,7 @@ const GameStatus = (props) => {
                         </Space>
                     </Form.Item>
 
-                    {mode && (<Form.Item label="快捷操作">
+                    {mode && (<Form.Item label="更新游戏">
                         <Space>
                             <Button type="primary"
                                 onClick={() => { updateGameOnclick() }}
@@ -154,11 +159,11 @@ const GameStatus = (props) => {
                         </Space>
                     </Form.Item>)}
 
-                    <Form.Item label="清理游戏存档" >
+                    <Form.Item label="清理存档" >
                         <Button type="primary" danger icon={<DeleteOutlined />}>清理</Button>
                     </Form.Item>
 
-                    <Form.Item label="恢复游戏备份">
+                    <Form.Item label="恢复备份">
                         <Space>
                             <Button>恢复备份</Button>
                             <Button style={{

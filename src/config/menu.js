@@ -36,7 +36,7 @@ export const menus = [
     //       ],
     // },
     {
-        path: '/dashboard',name: 'Dashboard',icon: <DashboardOutlined />, element: <Dashboard />,
+        path: '/',name: 'Dashboard',icon: <DashboardOutlined />, element: <Dashboard />,
     },
     {
         path: '/home',

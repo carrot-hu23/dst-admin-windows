@@ -75,7 +75,7 @@ const System = () => {
                     <Form.Item label="启动方式" name="mode" onChange={onRadioChange}>
                         <Radio.Group >
                             <Radio key={1} value={1}>Steamcmd</Radio>
-                            <Radio key={2} value={2}>Steam Don't Starve Together Dedicated server</Radio>
+                            <Radio key={2} value={2}>Steam</Radio>
                         </Radio.Group>
                     </Form.Item>
                     {choose === '1' && (
@@ -106,7 +106,7 @@ const System = () => {
                     >
                         <Input />
                     </Form.Item>
-                    <Form.Item
+                    {/* <Form.Item
                         label="服务器存档位置"
                         name="doNotStarveTogether"
                         tooltip="饥荒服务器房间的位置（\Documents\Klei\DoNotStarveTogether）"
@@ -118,7 +118,7 @@ const System = () => {
                         ]}
                     >
                         <Input placeholder="服务器存档位置" />
-                    </Form.Item>
+                    </Form.Item> */}
 
                     <Form.Item
                         label="服务器文件夹名"

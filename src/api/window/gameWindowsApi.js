@@ -1,22 +1,13 @@
-// import { dst_path, klei_directory } from "../../config/dst_config";
-
-
-import { readDstConfigSync } from "./dstConfigApi";
-
-const config = readDstConfigSync()
-
-const dst_base_path = config.doNotStarveTogether + config.cluster
-
-const cluster_ini_path = dst_base_path + "\\cluster.ini"
-const cluster_token_path = dst_base_path + "\\cluster_token.txt"
-const master_leveldataoverride_path = dst_base_path + '\\Master\\leveldataoverride.lua'
-const caves_leveldataoverride_path = dst_base_path + '\\Caves\\leveldataoverride.lua'
-const modoverrides_path = dst_base_path + '\\Master\\modoverrides.lua'
-const master_modoverrides_path = dst_base_path + '\\Master\\modoverrides.lua'
-const caves_modoverrides_path = dst_base_path + '\\Caves\\modoverrides.lua'
-
-
-const mods_setup_path = config.force_install_dir + 'mods\\dedicated_server_mods_setup.lua'
+import {
+    cluster_ini_path,
+    cluster_token_path,
+    master_leveldataoverride_path,
+    caves_leveldataoverride_path,
+    modoverrides_path,
+    master_modoverrides_path,
+    caves_modoverrides_path,
+    mods_setup_path
+} from "./dstConfigApi";
 
 const fs = window.require('fs')
 
@@ -29,44 +20,31 @@ function readFile(filePath, callback) {
 }
 
 function read_cluster_ini() {
-    var data = fs.readFileSync(cluster_ini_path, 'UTF-8')
-    // console.log("cluster.ini: " + data.toString())
 
-    // split the contents by new line
+    var data = fs.readFileSync(cluster_ini_path(), 'UTF-8')
     const lines = data.split(/\r?\n/);
 
-    // print all lines
-    // lines.forEach((line) => {
-    //     console.log(line);
-    // });
-
-
-    // return data.toString()
     return lines
 
 }
 
 function read_cluster_token() {
-    var data = fs.readFileSync(cluster_token_path)
-    // console.log("cluster_token.txt" + data.toString())
+    var data = fs.readFileSync(cluster_token_path())
     return data.toString()
 }
 
 function read_master_leveldataoverride() {
-    var data = fs.readFileSync(master_leveldataoverride_path)
-    // console.log("master_leveldataoverride.lua" + data.toString())
+    var data = fs.readFileSync(master_leveldataoverride_path())
     return data.toString()
 }
 
 function read_caves_leveldataoverride() {
-    var data = fs.readFileSync(caves_leveldataoverride_path)
-    // console.log("caves_leveldataoverride.lua" + data.toString())
+    var data = fs.readFileSync(caves_leveldataoverride_path())
     return data.toString()
 }
 
 function read_modoverrides() {
-    var data = fs.readFileSync(modoverrides_path)
-    // console.log("modoverrides.lua" + data.toString())
+    var data = fs.readFileSync(modoverrides_path())
     return data.toString()
 }
 
@@ -195,35 +173,35 @@ function write_cluster_ini(data) {
     clusterIni += 'steam_group_admins = false' + '\n'
     clusterIni += '\n'
 
-    const res = fs.writeFileSync(cluster_ini_path, clusterIni, 'UTF-8')
+    const res = fs.writeFileSync(cluster_ini_path(), clusterIni, 'UTF-8')
     return res
 }
 
 function write_cluster_token(data) {
-    const res = fs.writeFileSync(cluster_token_path, data, 'UTF-8')
+    const res = fs.writeFileSync(cluster_token_path(), data, 'UTF-8')
     return res
 }
 
 function write_master_leveldataoverride(data) {
-    const res = fs.writeFileSync(master_leveldataoverride_path, data, 'UTF-8')
+    const res = fs.writeFileSync(master_leveldataoverride_path(), data, 'UTF-8')
     return res
 }
 
 function write_caves_leveldataoverride(data) {
-    const res = fs.writeFileSync(caves_leveldataoverride_path, data, 'UTF-8')
+    const res = fs.writeFileSync(caves_leveldataoverride_path(), data, 'UTF-8')
     return res
 }
 
 function write_modoverrides(data) {
-    fs.writeFileSync(master_modoverrides_path, data, 'UTF-8')
-    fs.writeFileSync(caves_modoverrides_path, data, 'UTF-8')
+    fs.writeFileSync(master_modoverrides_path(), data, 'UTF-8')
+    fs.writeFileSync(caves_modoverrides_path(), data, 'UTF-8')
 }
 
 function write_mod_setup(mods) {
     const pattern = /workshop-\w[-\w+]*/g;
     let serverModSetup = ""
     const workshops = mods.match(pattern)
-    if(workshops === undefined || workshops === null) {
+    if (workshops === undefined || workshops === null) {
         return
     }
     for (const workshop of workshops) {
@@ -233,20 +211,17 @@ function write_mod_setup(mods) {
         serverModSetup += 'ServerModSetup("' + workshopId + '")\n'
     }
 
-    // console.log(serverModSetup);
-    // console.log('mods_setup_path', mods_setup_path);
-
-    const res = fs.writeFileSync(mods_setup_path, serverModSetup, 'UTF-8')
+    const res = fs.writeFileSync(mods_setup_path(), serverModSetup, 'UTF-8')
     return res
 }
 
 export {
 
-    cluster_ini_path,
-    cluster_token_path,
-    master_leveldataoverride_path,
-    caves_leveldataoverride_path,
-    modoverrides_path,
+    // cluster_ini_path,
+    // cluster_token_path,
+    // master_leveldataoverride_path,
+    // caves_leveldataoverride_path,
+    // modoverrides_path,
 
     readFile,
     read_cluster_ini,

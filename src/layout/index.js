@@ -20,7 +20,7 @@ function LayoutApp(props) {
     return (
         <>
             <BasicLayout
-            // siderWidth='200'
+                // siderWidth='200'
                 logo='https://th.bing.com/th/id/OIP.dExFg3CLRkNgsES2jyoQVQHaHa?pid=ImgDet&rs=1'
                 token={{
                     header: {
@@ -45,27 +45,6 @@ function LayoutApp(props) {
                     // }
 
                 }}
-
-                bgLayoutImgList={[
-                    // {
-                    //     src: 'https://cdn.forums.klei.com/public/style_images/klei/games/dont_starve/ds-ipb-bkg.jpg',
-                    //     // left: 85,
-                    //     // bottom: 100,
-                    //     // height: '303px',
-                    // },
-                    // {
-                    //     src: 'https://img.alicdn.com/imgextra/i2/O1CN01O4etvp1DvpFLKfuWq_!!6000000000279-2-tps-609-606.png',
-                    //     bottom: -68,
-                    //     right: -45,
-                    //     height: '303px',
-                    // },
-                    // {
-                    //     src: 'https://img.alicdn.com/imgextra/i3/O1CN018NxReL1shX85Yz6Cx_!!6000000005798-2-tps-884-496.png',
-                    //     bottom: 0,
-                    //     left: 0,
-                    //     width: '331px',
-                    // },
-                ]}
                 {...settings}
                 {...props}
                 title={title}
@@ -76,13 +55,14 @@ function LayoutApp(props) {
                 // contentWidth={'Fluid'}
                 // fixSiderbar={'true'}
                 // siderMenuType={'sub'}
-                breadcrumbRender={(routers = []) => [
-                    {
-                        path: '/',
-                        breadcrumbName: '主页',
-                    },
-                    ...routers,
-                ]}
+                //面包屑
+                // breadcrumbRender={(routers = []) => [
+                //     {
+                //         path: '/',
+                //         breadcrumbName: '主页',
+                //     },
+                //     ...routers,
+                // ]}
 
                 // menuItemRender={(menuItemProps, defaultDom) => {
                 //     <div
@@ -104,32 +84,10 @@ function LayoutApp(props) {
                         <Link to={item.path}>{dom}</Link>
                     </div>
                 )}
-                // avatarProps={{
-                //     src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-                //     size: 'small',
-                //     title: (
-                //         <Tittle />
-                //     ),
-                // }}
             >
 
-                <PageContainer
-                                // header={{
-                                //     title: '',
-                                // }}
-                >
-                    
+                <PageContainer>
                         <div><Outlet /></div>
-                        {/* <Card></Card> */}
-
-                    {/* <ProCard
-                        style={{
-                            height: '200vh',
-                            minHeight: 800,
-                        }}
-                    >
-                        <div><Outlet /></div>
-                    </ProCard> */}
                 </PageContainer>
                 <SettingDrawer enableDarkTheme settings={settings} onSettingChange={setSettings} />
             </BasicLayout>

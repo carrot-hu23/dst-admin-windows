@@ -1,51 +1,69 @@
-import { http } from "../../utils/http"
+import { readDstConfigSync } from "./dstConfigApi"
+import { message } from 'antd';
 
-async function createBackupApi() {
-    const url = '/api/dashboard'
-    const response = await http.get(url)
-    return response.data
+const fs = window.require('fs')
+const path = window.require('path');
+const { shell } = window.require("electron");
+
+
+async function createBackupApi(backupName) {
+    const config = readDstConfigSync()
+    const dst_base_path = path.join(window.process.env.USERPROFILE + "", "Documents","Klei","DoNotStarveTogether",config.cluster)
+    const backupPath = config.backupPath
+
+    //创建游戏备份
+
 }
 
 function getBackupApi() {
-    return [{
-        "createTime": "2023-01-27T16:07:25.2839413+08:00",
-        "fileName": "test2027 - 副本.zip",
-        "fileSize": 2232891,
-        "time": 1674806845
-    }]
+    const backupPath = readDstConfigSync().backupPath
+    const backupDir = fs.readdirSync(backupPath)
+    const newBackupDir = backupDir.filter(item => path.extname(item) === '.zip' || path.extname(item) === '.tar')
+
+    const backupList = newBackupDir.map(item=>{
+       const file = fs.statSync(path.join(backupPath, item))    
+       return {
+        fileName: item,
+        fileSize: file.size,
+        createTime: file.ctime,
+        time: file.mtime
+       }
+    })
+
+    return backupList
 }
 
 async function deleteBackupApi(fileNames) {
-    const url = '/api/game/backup'
-    const response = await http.delete(url, {
-        data: {
-            fileNames: fileNames,
-        }
-    })
-    return response.data
+    const backupPath = readDstConfigSync().backupPath
+    fileNames.map(fileName=>fs.unlinkSync(path.join(backupPath, fileName)))
 }
 
 async function renameBackupApi(data) {
-    const url = '/api/game/backup'
-    const response = await http.put(url, data)
-    return response.data
+
+    const backupPath = readDstConfigSync().backupPath
+    const {fileName, newName} = data
+    console.log('re', data);
+    
+    fs.renameSync(path.join(backupPath, fileName),path.join(backupPath, newName))
+    
 }
 
-async function downloadBackupApi(fileName) {
-    const url = '/api/game/backup/download'
-    const response = await http.get(url, {
-        params: {
-            fileName: fileName
-        },
-        responseType: 'blob',
-    })
-    return response.data
+function openBackupDir(fileName) {
+
+    const baseBackupPath = readDstConfigSync().backupPath
+    
+    const filePath = path.join(baseBackupPath, fileName)
+    
+    if(!fs.existsSync(filePath)) {
+        message.warning(filePath+' 文件不存在')
+    }
+    shell.showItemInFolder(filePath)
 }
 
 export {
     createBackupApi,
     getBackupApi,
     deleteBackupApi,
-    downloadBackupApi,
-    renameBackupApi
+    renameBackupApi,
+    openBackupDir
 }

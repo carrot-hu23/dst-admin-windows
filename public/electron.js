@@ -1,12 +1,14 @@
 const path = require('path');
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow,Menu } = require('electron');
+
 const isDev = require('electron-is-dev');
 
 function createWindow() {
+  Menu.setApplicationMenu(null)
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
+    width: 1000,
     height: 600,
     // webPreferences: {
     //   nodeIntegration: true,
