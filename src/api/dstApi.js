@@ -1,12 +1,26 @@
 import { http } from "../utils/http";
 
-const dstHomeServerListUrl = "/api/dst/home/server"
-const dstHomeServerDetailUrl = "/api/dst/home/server/detail"
-const dstVersionAUrl = "/api/dst/version"
+let dstHomeServerListUrl
+let dstHomeServerDetailUrl
+let dstVersionAUrl
+
+// if (localStorage.getItem("isDev")) {
+//     dstHomeServerListUrl = "/api/dst/home/server"
+//     dstHomeServerDetailUrl = "/api/dst/home/server/detail"
+//     dstVersionAUrl = "/api/dst/version"
+// } else {
+//     dstHomeServerListUrl = "https://dst.liuyh.com/index/serverlist/getserverlist.html"
+//     dstHomeServerDetailUrl = "https://dst.liuyh.com/index/serverlist/getserverdetail.html"
+//     dstVersionAUrl = "/api/dst/version"
+// }
+
+
+dstHomeServerListUrl = "https://dst.liuyh.com/index/serverlist/getserverlist.html"
+dstHomeServerDetailUrl = "https://dst.liuyh.com/index/serverlist/getserverdetail.html"
+dstVersionAUrl = "/api/dst/version"
 
 async function getHomeListApi(params) {
-    // const url = '/dst/index/serverlist/getserverlist.html'
-
+    
     const response = await http.post(dstHomeServerListUrl, {
         page: params.current,
         paginate: 10,
@@ -24,7 +38,7 @@ async function getHomeListApi(params) {
 }
 
 export async function dstHomeListApi(params) {
-    const response =  await getHomeListApi(params)
+    const response = await getHomeListApi(params)
     const responseData = JSON.parse(response)
     let data = responseData.successinfo.data
     const homelist = data.map(value => {
@@ -63,7 +77,7 @@ export async function dstHomeListApi(params) {
         fetch_time_delta: responseData.successinfo.fetch_time_delta
     }
     console.log(temp);
-    
+
     return temp
 }
 
@@ -83,7 +97,7 @@ export async function dstHomeDetailApi(params) {
 
 export function getPlayer(response) {
     const success = response.success
-    if(!success) {
+    if (!success) {
         return []
     } else {
         return response.successinfo.players

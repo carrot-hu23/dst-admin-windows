@@ -2,7 +2,7 @@
 import { ProTable } from '@ant-design/pro-components';
 import { useRef } from 'react';
 
-import { Button, Modal, Image, Skeleton, Card } from 'antd';
+import { Button, Modal, Image, Skeleton, Card, message } from 'antd';
 import { dstHomeListApi, dstHomeDetailApi } from '../../api/dstApi';
 // import { LockOutlined } from '@ant-design/icons';
 
@@ -53,10 +53,15 @@ const DstServerList = () => {
         }).then(response => {
             setLoading(false)
             const responseData = JSON.parse(response)
+            console.log('res', responseData);
+            
             var success = responseData.success
             if (success) {
+                console.log("success",responseData)
                 setHomeInfo(responseData)
-                console.log(responseData.successinfo.players)
+            } else {
+                setIsModalOpen(false)
+                message.error(responseData.errorinfo)
             }
 
         })
@@ -94,17 +99,20 @@ const DstServerList = () => {
                 </div>
             ),
             sorter: (a, b) => b.connected - a.connected,
-            align: 'right '
+            align: 'right ',
+            search: false
         },
         {
             title: '游戏模式',
             key: 'mode',
             render: (text, record, _, action) => (<div>{record.mode}</div>),
+            search: false
         },
         {
             title: '季节',
             key: 'season',
             dataIndex: 'season',
+            search: false,
             render: (text, record, _, action) => (<div>
                 {record.season === 'spring' && (
                     // <div>春季</div>
@@ -142,6 +150,7 @@ const DstServerList = () => {
             </div>),
         },
         {
+            search: false,
             disable: true,
             title: '密码',
             key: 'password',
@@ -200,17 +209,18 @@ const DstServerList = () => {
                 onCancel={handleCancel}
 
             >
-                <Skeleton title={true} loading={loading} active>
+                <Skeleton title={"正在查询房间信息"} loading={loading} active>
                     <Card
                         bordered={false}
                         style={{
                             overflowY: 'auto',
-                            height: 500
+                            height: 360
                         }
 
                         }>
                         <HomeDetail home={homeInfo} />
                     </Card>
+                    {/* <HomeDetail home={homeInfo} /> */}
                 </Skeleton>
             </Modal>
 

@@ -3,6 +3,7 @@ import DstServerList from "../pages/Dst";
 import Dashboard from "../pages/Dashboard";
 import System from "../pages/System";
 import Backup from "../pages/Backup";
+import About from "../pages/About";
 
 import {
     TeamOutlined, 
@@ -11,7 +12,8 @@ import {
     SmileOutlined,
     ExperimentOutlined,
     HomeOutlined ,
-    DashboardOutlined
+    DashboardOutlined,
+    QuestionCircleOutlined
 } from '@ant-design/icons';
 
 
@@ -69,5 +71,8 @@ export const menus = [
             },
           ],
         
+    },
+    {
+        path: '/about', name: '关于', element: <About/ >, icon: <QuestionCircleOutlined />,
     },
 ] 

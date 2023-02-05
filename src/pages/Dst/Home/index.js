@@ -6,9 +6,9 @@ import HomeModInfo from '../../../component/dst/HomeModInfo';
 
 const HomeDetail = (props) => {
 
-    const players = props.home.successinfo.players || []
-    const home = props.home.successinfo || {}
-    const mods = props.home.successinfo.mods_info || {}
+    const players = props.home.successinfo.players === undefined?[]: props.home.successinfo.players 
+    const home = props.home.successinfo  === undefined? {} : props.home.successinfo
+    const mods = props.home.successinfo.mods_info === undefined? []:props.home.successinfo.mods_info 
     const items = [
         {
             label: '概要',

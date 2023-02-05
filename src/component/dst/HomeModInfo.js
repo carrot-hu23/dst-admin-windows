@@ -11,12 +11,15 @@ const data = [
 ]
 
 const HomeModInfo = (props) => {
-
+    let mods = []
+    if(props.mods !== undefined && props.mods !== null) {
+        mods = props.mods
+    }
     return (
         <>
             <List
                 itemLayout="horizontal"
-                dataSource={props.mods || data}
+                dataSource={mods}
                 renderItem={(item) => (
                     <List.Item
                         actions={

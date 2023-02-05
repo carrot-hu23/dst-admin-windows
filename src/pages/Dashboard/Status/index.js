@@ -10,7 +10,7 @@ import {
 import { DeleteOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 
-import { createBackupApi } from '../../../api/backupApi';
+import { createBackupApi } from '../../../api/window/backupWindowsApi';
 
 import { readDstConfigSync } from '../../../api/window/dstConfigApi';
 
@@ -98,6 +98,7 @@ const GameStatus = (props) => {
 
     const updateGameOnclick = () => {
         message.success('正在更新游戏')
+        setUpdateStatus(true)
         updateDst((err, data, stderr) => {
             if (err !== null) {
                 message.error('饥荒更新失败')
@@ -110,15 +111,18 @@ const GameStatus = (props) => {
     }
 
     const createBackupOnClick = () => {
-
+        setCreateBackupStatus(true)
         message.success('正在创建游戏备份')
-        createBackupApi()
+        createBackupApi("")
             .then(response => {
                 message.success('创建游戏备份成功')
-                setCreateBackupStatus(false)
             })
             .catch(error => {
+                console.log('error', error);
                 message.error('创建游戏备份失败')
+                
+            })
+            .finally(()=>{
                 setCreateBackupStatus(false)
             })
     }

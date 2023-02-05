@@ -5,8 +5,9 @@ const { app, BrowserWindow,Menu } = require('electron');
 const isDev = require('electron-is-dev');
 
 function createWindow() {
-  Menu.setApplicationMenu(null)
+  //Menu.setApplicationMenu(null)
   // Create the browser window.
+  
   const win = new BrowserWindow({
     width: 1000,
     height: 600,
@@ -17,7 +18,8 @@ function createWindow() {
       // nodeIntegration: false,
       // preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      webSecurity: false
     },
   });
 
