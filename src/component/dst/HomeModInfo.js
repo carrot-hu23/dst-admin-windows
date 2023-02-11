@@ -1,14 +1,14 @@
 import { Image, List, Tooltip } from 'antd';
 
-const data = [
-    [
-        "workshop-1595631294",
-        "Smart Minisign",
-        "1.1.5",
-        "1.1.5",
-        true
-    ]
-]
+// const data = [
+//     [
+//         "workshop-1595631294",
+//         "Smart Minisign",
+//         "1.1.5",
+//         "1.1.5",
+//         true
+//     ]
+// ]
 
 const HomeModInfo = (props) => {
     let mods = []

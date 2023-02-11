@@ -9,7 +9,7 @@ import { dstHomeListApi, dstHomeDetailApi } from '../../api/dstApi';
 import React, { useState } from 'react';
 
 import HomeDetail from './Home';
-
+import './index.css';
 
 const DstServerList = () => {
     const actionRef = useRef();

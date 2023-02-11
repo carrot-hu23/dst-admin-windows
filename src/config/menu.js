@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard";
 import System from "../pages/System";
 import Backup from "../pages/Backup";
 import About from "../pages/About";
+import Player from "../pages/Player";
 
 import {
     TeamOutlined, 
@@ -47,7 +48,7 @@ export const menus = [
         icon: <HomeOutlined />,
     },
     {
-        path: '/player', name: '玩家管理', element: <div>玩家管理2</div>, icon: <TeamOutlined />,
+        path: '/player', name: '玩家管理', element: <Player />, icon: <TeamOutlined />,
     },
     {
         path: '/backup', name: '游戏备份', element: <Backup />, icon: <CloudSyncOutlined />,

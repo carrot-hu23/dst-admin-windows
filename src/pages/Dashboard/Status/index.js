@@ -1,22 +1,15 @@
-
-import { Card, message } from 'antd';
-// import React, { useState } from 'react';
-import {
-    Button,
-    Form,
-    Space
-} from 'antd';
-
-import { DeleteOutlined } from '@ant-design/icons';
+import { Card, message, Button, Form, Space } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { createBackupApi } from '../../../api/window/backupWindowsApi';
 
 import { readDstConfigSync } from '../../../api/window/dstConfigApi';
+import RestoreBackup from './restoreBackup';
+import CleanArchive from './cleanArchive';
 
 const cmd = window.require('node-cmd');
 
-function launchDstMasterCmd () {
+function launchDstMasterCmd() {
     const config = readDstConfigSync()
     const dstexe = window.require('path').join(config.force_install_dir, "bin64")
     const cluster = config.cluster
@@ -24,7 +17,7 @@ function launchDstMasterCmd () {
     return cmd
 }
 
-function launchDstCavesCmd () {
+function launchDstCavesCmd() {
     const config = readDstConfigSync()
     const dstexe = window.require('path').join(config.force_install_dir, "bin64")
     const cluster = config.cluster
@@ -80,8 +73,6 @@ const GameStatus = (props) => {
 
     const [updateGameStatus, setUpdateStatus] = useState(false)
     const [createBackupStatus, setCreateBackupStatus] = useState(false)
-    // const [runningStatus, setRunningStatus] = useState(status)
-
     const [mode, setMode] = useState(false)
 
     useEffect(() => {
@@ -120,9 +111,9 @@ const GameStatus = (props) => {
             .catch(error => {
                 console.log('error', error);
                 message.error('创建游戏备份失败')
-                
+
             })
-            .finally(()=>{
+            .finally(() => {
                 setCreateBackupStatus(false)
             })
     }
@@ -164,12 +155,13 @@ const GameStatus = (props) => {
                     </Form.Item>)}
 
                     <Form.Item label="清理存档" >
-                        <Button type="primary" danger icon={<DeleteOutlined />}>清理</Button>
+                        <CleanArchive />
                     </Form.Item>
 
                     <Form.Item label="恢复备份">
                         <Space>
-                            <Button>恢复备份</Button>
+                            {/* <Button onClick={()=>setIsModalOpen(true)}>恢复备份</Button> */}
+                            <RestoreBackup />
                             <Button style={{
                                 margin: '0 8px',
                                 background: '#13CE66',
