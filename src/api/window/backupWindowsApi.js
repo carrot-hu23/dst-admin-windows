@@ -77,6 +77,13 @@ async function renameBackupApi(data) {
 
 }
 
+function openDir(filePath) {
+    if (!fs.existsSync(filePath)) {
+        message.warning(filePath + ' 文件不存在')
+    }
+    shell.showItemInFolder(filePath)
+}
+
 function openBackupDir(fileName) {
 
     const baseBackupPath = readDstConfigSync().backupPath
@@ -89,10 +96,31 @@ function openBackupDir(fileName) {
     shell.showItemInFolder(filePath)
 }
 
+function removeDir(dir) {
+    if (!fs.existsSync(dir)) {
+        return
+    }
+    let files = fs.readdirSync(dir)
+    for(var i=0;i<files.length;i++){
+      let newPath = path.join(dir,files[i]);
+      let stat = fs.statSync(newPath)
+      if(stat.isDirectory()){
+        //如果是文件夹就递归下去
+        removeDir(newPath);
+      }else {
+       //删除文件
+        fs.unlinkSync(newPath);
+      }
+    }
+    fs.rmdirSync(dir)//如果文件夹是空的，就将自己删除掉
+}
+
 export {
     createBackupApi,
     getBackupApi,
     deleteBackupApi,
     renameBackupApi,
-    openBackupDir
+    openBackupDir,
+    openDir,
+    removeDir
 }

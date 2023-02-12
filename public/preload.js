@@ -18,3 +18,9 @@ window.dstPlayersReply = (func)=>{
         func(event, arg)
     })
 }
+
+window.dstOp = (func)=>{
+    ipcRenderer.on('dst-op', (event, arg) => {
+        func(event, arg)
+    })
+}

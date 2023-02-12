@@ -1,8 +1,8 @@
 {
   "name": "dst-admin-windows",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "hujb",
-  "description": "window 饥荒联机版开服管理工具",
+  "description": "window steam 饥荒联机版开服管理工具",
   "private": true,
   "dependencies": {
     "@ant-design/pro-components": "^2.3.51",

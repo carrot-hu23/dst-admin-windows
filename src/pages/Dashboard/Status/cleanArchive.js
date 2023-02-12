@@ -1,6 +1,8 @@
 import { Button, Popconfirm, message } from 'antd';
 import { useState } from 'react';
 import { DeleteOutlined } from '@ant-design/icons';
+import { readDstConfigSync } from '../../../api/window/dstConfigApi';
+import { removeDir } from '../../../api/window/backupWindowsApi';
 
 const CleanArchive = () => {
 
@@ -11,6 +13,16 @@ const CleanArchive = () => {
     };
     const handleOk = () => {
         setConfirmLoading(true);
+
+        const config = readDstConfigSync()
+        const masterSaveDir = window.require('path').join(config.doNotStarveTogether, config.cluster, "Master", "save")
+        const cavesSaveDir = window.require('path').join(config.doNotStarveTogether, config.cluster, "Caves", "save")
+
+        console.log('masterSaveDir', masterSaveDir,'cavesSaveDir', cavesSaveDir);
+        removeDir(masterSaveDir)
+        removeDir(cavesSaveDir)
+        // removeDir('C:\\Users\\xm\\Desktop\\backup\\cluster1\\Master\\save')
+
         setTimeout(() => {
             setOpen(false);
             setConfirmLoading(false);

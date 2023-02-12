@@ -54,7 +54,7 @@ const Cluster = (props) => {
       </Form.Item>
       <Form.Item label="游戏模式" name='game_mode'>
           <Radio.Group>
-          {dstGameMod.map(item =>  <Tooltip title={item.description}><Radio key={item.name} value={item.name}> {item.cn} </Radio></Tooltip>)}
+          {dstGameMod.map(item =>  <Tooltip title={item.description} key={item.name}><Radio key={item.name} value={item.name}> {item.cn} </Radio></Tooltip>)}
           </Radio.Group>
         </Form.Item>
 

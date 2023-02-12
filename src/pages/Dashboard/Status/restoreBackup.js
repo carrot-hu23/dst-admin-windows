@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Input, Skeleton, Modal, Card, List, Drawer, Button, Space, Popconfirm, message } from 'antd';
 import './index.css';
-import { getBackupApi, openBackupDir } from '../../../api/window/backupWindowsApi';
+import { getBackupApi, openBackupDir, removeDir } from '../../../api/window/backupWindowsApi';
+import { readDstConfigSync } from '../../../api/window/dstConfigApi';
+import { unzip } from '../../../api/compressing';
 
 const RestoreBackup = (props) => {
 
@@ -36,11 +38,30 @@ const RestoreBackup = (props) => {
 
     const handlOkRestore = () => {
         setConfirmLoading(true);
-        setTimeout(() => {
-            setRestoreConfirmn(false);
-            setConfirmLoading(false);
-            message.success("恢复备份成功")
-        }, 2000);
+
+        const config = readDstConfigSync()
+        const clusterPath = window.require('path').join(config.doNotStarveTogether, config.cluster)
+        const backPath = window.require('path').join(config.backupPath, backupItem.fileName)
+        console.log('clusterPath', clusterPath, 'backPath', backPath);
+
+        //删除 存档
+        removeDir(clusterPath)
+        //解压指定的存档
+        unzip(backPath, config.doNotStarveTogether, ()=>{
+            message.success("恢复存档成功")
+        }, error=>{
+            console.log('unzip error: ', error);
+            message.error("恢复存档失败, 请先关闭服务器再恢复！！！")
+        })
+        setRestoreConfirmn(false);
+        setConfirmLoading(false);
+
+        // setTimeout(() => {
+        //     setRestoreConfirmn(false);
+        //     setConfirmLoading(false);
+        //     message.success("恢复备份成功")
+        // }, 2000);
+
     };
 
 

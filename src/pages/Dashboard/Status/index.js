@@ -1,7 +1,7 @@
 import { Card, message, Button, Form, Space } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { createBackupApi } from '../../../api/window/backupWindowsApi';
+import { createBackupApi, openDir } from '../../../api/window/backupWindowsApi';
 
 import { readDstConfigSync } from '../../../api/window/dstConfigApi';
 import RestoreBackup from './restoreBackup';
@@ -118,6 +118,12 @@ const GameStatus = (props) => {
             })
     }
 
+    const openGameDir =()=>{
+        const config = readDstConfigSync()
+        const dirPath = window.require('path').join(config.doNotStarveTogether, config.cluster)
+        openDir(dirPath)
+    }
+
     return (
         <>
             <Card
@@ -139,6 +145,11 @@ const GameStatus = (props) => {
                             <Button
                                 onClick={launchOnClick}
                                 type='primary' >{'启动游戏'}
+                            </Button>
+
+                            <Button
+                                onClick={openGameDir}
+                            >{'打开目录'}
                             </Button>
                         </Space>
                     </Form.Item>
