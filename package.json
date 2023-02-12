@@ -34,10 +34,16 @@
     "build:win": "npm run build && electron-builder"
   },
   "build": {
-    "extraResources": {
-      "from": "./dst_config",
-      "to": "../dst_config"
-    },
+    "extraResources": [
+      {
+        "from": "./dst_config",
+        "to": "../dst_config"
+      },
+      {
+        "from": "./main.exe",
+        "to": "../main.exe"
+      }
+    ],
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
