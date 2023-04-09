@@ -236,5 +236,7 @@ export {
     write_caves_leveldataoverride,
     write_modoverrides,
     write_mod_setup,
-    write_cluster_ini
+    write_cluster_ini,
+
+    parseClusterIni
 }

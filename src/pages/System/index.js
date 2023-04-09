@@ -39,7 +39,7 @@ const System = () => {
         config += 'doNotStarveTogether=' + values.doNotStarveTogether + '\n'
         config += 'cluster=' + values.cluster + '\n'
         config += 'backupPath=' + values.backupPath + '\n'
-        
+        config += 'beta=' + values.beta + '\n'
         writeDstConfigSync(config)
     }
 
@@ -76,6 +76,12 @@ const System = () => {
                         <Radio.Group >
                             <Radio key={1} value={1}>Steamcmd</Radio>
                             <Radio key={2} value={2}>Steam</Radio>
+                        </Radio.Group>
+                    </Form.Item>
+                    <Form.Item label="类型" name="beta">
+                        <Radio.Group >
+                            <Radio key={1} value={0}>正式服</Radio>
+                            <Radio key={2} value={1}>测试服</Radio>
                         </Radio.Group>
                     </Form.Item>
                     {choose === '1' && (

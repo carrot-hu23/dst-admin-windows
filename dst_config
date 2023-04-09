@@ -1,6 +1,7 @@
 mode=1
 steamcmd=C:\steamcmd\
-force_install_dir=C:\steamcmd\install\
-doNotStarveTogether=undefined
+force_install_dir=C:\steam-dst
+doNotStarveTogether=C:\Users\xm\Documents\Klei\DoNotStarveTogether
 cluster=Cluster_1
-backupPath=C:\Users\xm\Desktop\backup\backup
+backupPath=C:\Users\xm\Desktop\饥荒配置文件和建家截图\饥荒存储备份\backup
+beta=0

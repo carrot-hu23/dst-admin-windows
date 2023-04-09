@@ -6,20 +6,41 @@ import { createBackupApi, openDir } from '../../../api/window/backupWindowsApi';
 import { readDstConfigSync } from '../../../api/window/dstConfigApi';
 import RestoreBackup from './restoreBackup';
 import CleanArchive from './cleanArchive';
+import SelectHome from './selectHome';
 
 const cmd = window.require('node-cmd');
 
 function launchDstMasterCmd() {
     const config = readDstConfigSync()
-    const dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    let dstexe
+    if (config.beta) {
+        dstexe = window.require('path').join(config.force_install_dir+'BetaBranch', "bin64")
+    } else {
+        dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    }
+    // if(config.mode === '2' || config.mode === 2) {
+    //     dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    // }
+    dstexe = window.require('path').join(config.force_install_dir, "bin64")
     const cluster = config.cluster
     const cmd = 'cd ' + dstexe + ' && Start "Master" dontstarve_dedicated_server_nullrenderer_x64.exe -console -cluster ' + cluster + ' -shard Master'
+    console.log('master cmd', cmd);
+
     return cmd
 }
 
 function launchDstCavesCmd() {
     const config = readDstConfigSync()
-    const dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    let dstexe
+    if (config.beta) {
+        dstexe = window.require('path').join(config.force_install_dir+'BetaBranch', "bin64")
+    } else {
+        dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    }
+    // if(config.mode === '2' || config.mode === 2) {
+    //     dstexe = window.require('path').join(config.force_install_dir, "bin64")
+    // }
+    dstexe = window.require('path').join(config.force_install_dir, "bin64")
     const cluster = config.cluster
     const cmd = 'cd ' + dstexe + ' && Start "Caves" dontstarve_dedicated_server_nullrenderer_x64.exe -console -cluster ' + cluster + ' -shard Caves'
     return cmd
@@ -59,8 +80,18 @@ function launchDstCaves() {
 
 function updateDst(callback) {
     const config = readDstConfigSync()
-    const updateCommand = 'Start steamcmd +login anonymous +force_install_dir ' + config.force_install_dir + ' +app_update 343050 validate +quit'
+    let updateCommand
+    if (config.beta) {
+        updateCommand = 'Start steamcmd +login anonymous +force_install_dir ' + config.force_install_dir + 'BetaBranch +app_update 343050 -beta updatebeta validate +quit'
+    } else {
+        updateCommand = 'Start steamcmd +login anonymous +force_install_dir ' + config.force_install_dir + ' +app_update 343050 validate +quit'
+    }
+    // if(config.mode === '2' || config.mode === 2) {
+    //     updateCommand = 'Start steamcmd +login anonymous +force_install_dir ' + config.force_install_dir + ' +app_update 343050 validate +quit'
+    // }
+    updateCommand = 'Start steamcmd +login anonymous +force_install_dir ' + config.force_install_dir + ' +app_update 343050 validate +quit'
     const command = 'cd ' + config.steamcmd + ' && ' + updateCommand
+    console.log('uodate dst cmd', updateCommand);
 
     cmd.run(command, (err, data, stderr) => {
         callback(err, data, stderr)
@@ -118,7 +149,7 @@ const GameStatus = (props) => {
             })
     }
 
-    const openGameDir =()=>{
+    const openGameDir = () => {
         const config = readDstConfigSync()
         const dirPath = window.require('path').join(config.doNotStarveTogether, config.cluster)
         openDir(dirPath)
@@ -140,16 +171,14 @@ const GameStatus = (props) => {
                     layout="horizontal"
                     labelAlign={'left'}
                 >
+                    <Form.Item label="选择房间" >
+                        <SelectHome />
+                    </Form.Item>
                     <Form.Item label="饥荒状况">
                         <Space>
                             <Button
                                 onClick={launchOnClick}
                                 type='primary' >{'启动游戏'}
-                            </Button>
-
-                            <Button
-                                onClick={openGameDir}
-                            >{'打开目录'}
                             </Button>
                         </Space>
                     </Form.Item>
@@ -157,6 +186,11 @@ const GameStatus = (props) => {
                     {mode && (<Form.Item label="更新游戏">
                         <Space>
                             <Button type="primary"
+                                style={{
+                                    // margin: '0 8px',
+                                    background: '#8470FF',
+                                    color: '#fff'
+                                }}
                                 onClick={() => { updateGameOnclick() }}
                                 loading={updateGameStatus}
                             >
@@ -185,6 +219,12 @@ const GameStatus = (props) => {
                             </Button>
                         </Space>
 
+                    </Form.Item>
+                    <Form.Item label="游戏位置" >
+                        <Button
+                            onClick={openGameDir}
+                        >{'打开目录'}
+                        </Button>
                     </Form.Item>
                 </Form>
             </Card>

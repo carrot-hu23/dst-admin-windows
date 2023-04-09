@@ -16,3 +16,7 @@ for i, v in ipairs(TheNet:GetClientTable()) do  print(string.format("%d %s %s %s
 
 
 AllPlayers[1]:PushEvent('death')
+
+## 参考
+自定义饥荒指令
+https://peppernotes.top/2019/11/dstcustomcmd
